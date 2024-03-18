@@ -29,6 +29,7 @@ class MyBaseModel(models.Model):
 
 class Province(MyBaseModel):
     name = models.CharField(max_length=250,
+                            unique=True,
                             blank=False,
                             null=False,
                             verbose_name="Name",
@@ -59,6 +60,7 @@ class City(MyBaseModel):
                                  verbose_name="Province",
                                  )
     name = models.CharField(max_length=250,
+                            unique=True,
                             blank=False,
                             null=False,
                             verbose_name="Name",
@@ -72,7 +74,7 @@ class City(MyBaseModel):
         return f'{self.name}({self.province.name})'
 
 
-class Person(MyBaseModel):
+class PhoneBookRow(MyBaseModel):
     city = models.ForeignKey(City,
                              related_name='persons',
                              on_delete=models.PROTECT,
@@ -84,23 +86,8 @@ class Person(MyBaseModel):
                                   )
     last_name = models.CharField(max_length=255,
                                  null=False,
-                                 verbose_name='Last name',
+                                 verbose_name='Last name'
                                  )
-
-    class Meta:
-        verbose_name = "Person"
-        verbose_name_plural = "Persons"
-
-    def __str__(self):
-        return f'{self.first_name} {self.last_name}({self.city.name})'
-
-
-class PhoneBookRow(MyBaseModel):
-    person = models.ForeignKey(Person,
-                               related_name='phone_book_rows',
-                               on_delete=models.PROTECT,
-                               verbose_name="Person",
-                               )
     phone_number = models.CharField(max_length=11,
                                     null=False,
                                     verbose_name='Phone number',
@@ -117,6 +104,6 @@ class PhoneBookRow(MyBaseModel):
         verbose_name_plural = "PhoneBookRows"
 
     def __str__(self):
-        return (f'{self.phone_number} '
-                f'({self.person.__str__()}) '
+        return (f'{self.first_name} {self.last_name} '
+                f'({self.phone_number}) '
                 f'created by {self.author}')

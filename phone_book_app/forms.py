@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import PhoneBookRow
+from .models import PhoneBookRow, City, Province
 
 
 class SignUpForm(UserCreationForm):
@@ -84,24 +84,28 @@ class SignUpForm(UserCreationForm):
 
 # Create Add Record Form
 class AddRecordForm(forms.ModelForm):
-    first_name = forms.CharField(required=True, widget=forms.widgets.TextInput(
-        attrs={"placeholder": "First Name", "class": "form-control"}),
-                                 label="")
-    last_name = forms.CharField(required=True, widget=forms.widgets.TextInput(
-        attrs={"placeholder": "Last Name", "class": "form-control"}), label="")
-    email = forms.CharField(required=True, widget=forms.widgets.TextInput(
-        attrs={"placeholder": "Email", "class": "form-control"}), label="")
-    phone = forms.CharField(required=True, widget=forms.widgets.TextInput(
-        attrs={"placeholder": "Phone", "class": "form-control"}), label="")
-    address = forms.CharField(required=True, widget=forms.widgets.TextInput(
-        attrs={"placeholder": "Address", "class": "form-control"}), label="")
-    city = forms.CharField(required=True, widget=forms.widgets.TextInput(
-        attrs={"placeholder": "City", "class": "form-control"}), label="")
-    state = forms.CharField(required=True, widget=forms.widgets.TextInput(
-        attrs={"placeholder": "State", "class": "form-control"}), label="")
-    zipcode = forms.CharField(required=True, widget=forms.widgets.TextInput(
-        attrs={"placeholder": "Zipcode", "class": "form-control"}), label="")
-
     class Meta:
         model = PhoneBookRow
+        fields = ("first_name",
+                  "last_name",
+                  "phone_number",
+                  "city",
+                  "author"
+                  )
+        exclude = ("user",)
+
+
+class AddCityForm(forms.ModelForm):
+    class Meta:
+        model = City
+        fields = ("name",
+                  "province"
+                  )
+        exclude = ("user",)
+
+
+class AddProvinceForm(forms.ModelForm):
+    class Meta:
+        model = Province
+        fields = ("name",)
         exclude = ("user",)

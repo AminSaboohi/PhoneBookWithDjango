@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import register
 
-from .models import Province, City, Person, PhoneBookRow
+from .models import Province, City, PhoneBookRow
 
 
 # Register your models here.
@@ -62,46 +62,33 @@ class CityAdmin(admin.ModelAdmin):
     )
 
 
-@register(Person)
-class PersonAdmin(admin.ModelAdmin):
+@register(PhoneBookRow)
+class PhoneBookRowAdmin(admin.ModelAdmin):
     list_display = ('id',
                     'first_name',
                     'last_name',
                     'city',
-                    'is_active',
-                    'created_date',
-                    'updated_date')
-    list_display_links = ('id', 'first_name', 'last_name', 'city')
-    list_filter = ('is_active',
-                   'created_date',
-                   'updated_date',
-                   )
-    list_editable = ('is_active',)
-    search_fields = ('first_name', 'last_name', 'city')
-
-    actions = (
-        activate_selected_items,
-        deactivate_selected_items,
-
-    )
-
-
-@register(PhoneBookRow)
-class PhoneBookRowAdmin(admin.ModelAdmin):
-    list_display = ('id',
-                    'person',
                     'phone_number',
                     'author',
                     'is_active',
                     'created_date',
                     'updated_date')
-    list_display_links = ('id', 'person', 'phone_number', 'author')
+    list_display_links = ('id',
+                          'first_name',
+                          'last_name',
+                          'city',
+                          'phone_number',
+                          'author')
     list_filter = ('is_active',
                    'created_date',
                    'updated_date',
                    'author',)
     list_editable = ('is_active',)
-    search_fields = ('person', 'phone_number', 'author')
+    search_fields = ('first_name',
+                     'last_name',
+                     'city',
+                     'phone_number',
+                     'author')
 
     actions = (
         activate_selected_items,

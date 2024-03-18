@@ -11,30 +11,30 @@
   <thead class="table-dark">
     <tr>
       <th scope="col">Name</th>
-      <th scope="col">Email</th>
       <th scope="col">Phone</th>
-      <th scope="col">Address</th>
       <th scope="col">City</th>
-      <th scope="col">State</th>
-      <th scope="col">Zipcode</th>
-      <th scope="col">Created At</th>
+      <th scope="col">Province</th>
+      <th scope="col">Created by</th>
+      <th scope="col">Created date</th>
+      <th scope="col">Updated_date</th>
+      <th scope="col">Is active</th>
       <th scope="col">ID</th>
     </tr>
   </thead>
   <tbody>
     
-{% if records %}
-	{% for record in records %}
+{% if phone_book_rows %}
+	{% for phone_book_row in phone_book_rows %}
 		<tr>
-			<td>{{ record.first_name }} {{ record.last_name }}</td>
-			<td>{{ record.email }}</td>
-			<td>{{ record.phone }}</td>
-			<td>{{ record.address }}</td>
-			<td>{{ record.city }}</td>
-			<td>{{ record.state }}</td>
-			<td>{{ record.zipcode }}</td>
-			<td>{{ record.created_at }}</td>
-			<td><a href="{% url 'record' record.id %}">{{ record.id }}</a></td>
+			<td>{{ phone_book_row.first_name }} {{ phone_book_row.last_name }}</td>
+			<td>{{ phone_book_row.phone_number }}</td>
+			<td>{{ phone_book_row.city.name }}</td>
+			<td>{{ phone_book_row.city.province.name }}</td>
+			<td>{{ phone_book_row.author.username }}</td>
+			<td>{{ phone_book_row.created_date }}</td>
+			<td>{{ phone_book_row.updated_date }}</td>
+			<td>{{ phone_book_row.is_active }}</td>
+			<td><a href="{% url 'phone_book_record' phone_book_row.id %}">{{ phone_book_row.id }}</a></td>
 		</tr>
 	{% endfor %}
 

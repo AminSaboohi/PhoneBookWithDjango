@@ -5,37 +5,34 @@
 
 <div class="card">
   <div class="card-header"><strong>
-    	{{ customer_record.first_name }}
-		{{ customer_record.last_name }}</strong>
+    	{{ phone_book_record.first_name }}
+		{{ phone_book_record.last_name }}</strong>
   </div>
   <div class="card-body">
 
 
 
 <p class="card-text">
-<strong>Email: </strong>{{ customer_record.email }}</p>
+<strong>Name: </strong>{{ phone_book_record.id }}</p>
 
 <p class="card-text">
-<strong>Phone: </strong>{{ customer_record.phone }}
+<strong>Phone: </strong>{{ phone_book_record.phone_number }}
 </p>
 
 <p class="card-text">
-<strong>Address: </strong>{{ customer_record.address }}</p>
+<strong>City: </strong>{{ phone_book_record.city.name }}</p>
 
 <p class="card-text">
-<strong>City: </strong>{{ customer_record.city }}</p>
+<strong>Province: </strong>{{ phone_book_record.city.province.name }}</p>
 
 <p class="card-text">
-<strong>State: </strong>{{ customer_record.state }}</p>
+<strong>Created by: </strong>{{ phone_book_record.author.username }}</p>
 
 <p class="card-text">
-<strong>Zipcode: </strong>{{ customer_record.zipcode }}</p>
+<strong>Created date: </strong>{{ phone_book_record.created_date }}</p>
 
 <p class="card-text">
-<strong>Create At: </strong>{{ customer_record.created_at }}</p>
-
-<p class="card-text">
-<strong>ID: </strong>{{ customer_record.id }}</p>
+<strong>Updated_date: </strong>{{ phone_book_record.updated_date }}</p>
 
 
   </div>
@@ -44,9 +41,9 @@
 <br/><br/>
 <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
 
-<a href="{% url 'delete_record' customer_record.id %}" class="btn btn-danger">Delete</a>
+<a href="{% url 'delete_phone_book_record' phone_book_record.id %}" class="btn btn-danger">Delete</a>
 
-<a href="{% url 'update_record' customer_record.id %}" class="btn btn-secondary">Update Record</a>
+<a href="{% url 'update_record' phone_book_record.id %}" class="btn btn-secondary">Update Record</a>
 
 
 {% endblock %}

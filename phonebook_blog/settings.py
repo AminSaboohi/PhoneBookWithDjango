@@ -37,7 +37,6 @@ INSTALLED_APPS = [
 
     # My Apss
     'phone_book_app.apps.PhoneBookAppConfig',
-    'users.apps.UsersConfig',
 
     # Third-party Apps
 ]

@@ -5,14 +5,16 @@
 <h1>Add Record</h1>
 <br/>
 
-<form method="POST" action="{% url 'add_record' %}">
+<form method="POST" action="{% url 'add_phone_book_record' %}">
 	{% csrf_token %}
 
 	{{ form.as_p }}
 
 <br/>
-  <button type="submit" class="btn btn-secondary">Add Record</button>
-   <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+  <button type="submit" class="btn btn-secondary">Add Phone Book Record</button>
+    <a href="{% url 'add_city' %}" class="btn btn-secondary">Add City</a>
+    <a href="{% url 'add_province' %}" class="btn btn-secondary">Add Province</a>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
 
 </form>
 
