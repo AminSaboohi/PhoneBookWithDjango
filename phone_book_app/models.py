@@ -36,7 +36,7 @@ class Province(MyBaseModel):
 
     @property
     def get_cities(self):
-        return self.citiss.filter().values(
+        return self.cities.filter().values(
             'id',
             'title',
             'description',
@@ -119,4 +119,4 @@ class PhoneBookRow(MyBaseModel):
     def __str__(self):
         return (f'{self.phone_number} '
                 f'({self.person.__str__()}) '
-                f'created by {self.author.name}')
+                f'created by {self.author}')
