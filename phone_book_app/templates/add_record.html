@@ -15,6 +15,12 @@
     <a href="{% url 'add_city' %}" class="btn btn-secondary">Add City</a>
     <a href="{% url 'add_province' %}" class="btn btn-secondary">Add Province</a>
     <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+    <script>
+		var name = "{{ user.id }}";
+
+		document.getElementById("elder").value = name;
+
+	</script>
 
 </form>
 

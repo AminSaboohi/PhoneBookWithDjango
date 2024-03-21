@@ -93,6 +93,11 @@ class AddRecordForm(forms.ModelForm):
                   "author"
                   )
         exclude = ("user",)
+        widgets = {
+            'author': forms.TextInput(
+                attrs={'class': 'form-control', 'value': '', 'id': 'elder',
+                       'type': 'hidden'}),
+        }
 
 
 class AddCityForm(forms.ModelForm):
