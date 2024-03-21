@@ -6,6 +6,21 @@ from .models import PhoneBookRow
 
 
 # Create your views here.
+def user_authenticated_decorator(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            result = view_func(request, *args, **kwargs)
+        else:
+            messages.success(
+                request,
+                message="You Must Be Logged In To Do That..."
+            )
+            result = redirect('home')
+        return result
+
+    return wrapper
+
+
 def home(request):
     phone_book_rows = PhoneBookRow.objects.all()
     # Check to see if logging in
@@ -72,114 +87,86 @@ def register_user(request):
     )
 
 
+@user_authenticated_decorator
 def phone_book_record(request, pk):
-    if request.user.is_authenticated:
-        # Look Up Row Datas
-        record = PhoneBookRow.objects.get(id=pk)
-        return render(
-            request,
-            template_name='record.html',
-            context={'phone_book_record': record}
-        )
-    else:
-        messages.success(
-            request,
-            message="You Must Be Logged In To View That Page..."
-        )
-        return redirect('home')
+    # Look Up Row Datas
+    record = PhoneBookRow.objects.get(id=pk)
+    return render(
+        request,
+        template_name='record.html',
+        context={'phone_book_record': record}
+    )
 
 
+@user_authenticated_decorator
 def delete_phone_book_record(request, pk):
-    if request.user.is_authenticated:
-        delete_it = PhoneBookRow.objects.get(id=pk)
-        delete_it.delete()
-        messages.success(
-            request,
-            message="Record Deleted Successfully..."
-        )
-        return redirect('home')
-    else:
-        messages.success(
-            request,
-            message="You Must Be Logged In To Do That..."
-        )
-        return redirect('home')
+    delete_it = PhoneBookRow.objects.get(id=pk)
+    delete_it.delete()
+    messages.success(
+        request,
+        message="Record Deleted Successfully..."
+    )
+    return redirect('home')
 
 
+@user_authenticated_decorator
 def add_phone_book_record(request):
     form = AddRecordForm(request.POST or None)
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            if form.is_valid():
-                form.author = request.user
-                form.save()
-                messages.success(request, message="Phone Book Record Added...")
-                return redirect('home')
-        return render(
-            request,
-            template_name='add_record.html',
-            context={'form': form}
-        )
-    else:
-        messages.success(request, message="You Must Be Logged In...")
-        return redirect('home')
-
-
-def add_city(request):
-    form = AddCityForm(request.POST or None)
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            if form.is_valid():
-                form.save()
-                messages.success(request, message="City Added...")
-                return redirect('add_phone_book_record')
-        return render(
-            request,
-            template_name='add_city.html',
-            context={'form': form}
-        )
-    else:
-        messages.success(request, message="You Must Be Logged In...")
-        return redirect('home')
-
-
-def add_province(request):
-    form = AddProvinceForm(request.POST or None)
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            if form.is_valid():
-                form.save()
-                messages.success(request, message="Province Added...")
-                return redirect('add_phone_book_record')
-        return render(
-            request,
-            template_name='add_province.html',
-            context={'form': form}
-        )
-    else:
-        messages.success(request, message="You Must Be Logged In...")
-        return redirect('home')
-
-
-def update_phone_book_record(request, pk):
-    if request.user.is_authenticated:
-        current_record = PhoneBookRow.objects.get(id=pk)
-        form = AddRecordForm(request.POST or None, instance=current_record)
+    if request.method == "POST":
         if form.is_valid():
             form.save()
-            messages.success(
-                request,
-                message="Phone Book Record Has Been Updated!"
-            )
+            messages.success(request, message="Phone Book Record Added...")
             return redirect('home')
-        return render(
-            request,
-            template_name='update_record.html',
-            context={'form': form}
-        )
-    else:
+    return render(
+        request,
+        template_name='add_record.html',
+        context={'form': form}
+    )
+
+
+@user_authenticated_decorator
+def add_city(request):
+    form = AddCityForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            messages.success(request, message="City Added...")
+            return redirect('add_phone_book_record')
+    return render(
+        request,
+        template_name='add_city.html',
+        context={'form': form}
+    )
+
+
+@user_authenticated_decorator
+def add_province(request):
+    form = AddProvinceForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            messages.success(request, message="Province Added...")
+            return redirect('add_phone_book_record')
+    return render(
+        request,
+        template_name='add_province.html',
+        context={'form': form}
+    )
+
+
+@user_authenticated_decorator
+def update_phone_book_record(request, pk):
+    current_record = PhoneBookRow.objects.get(id=pk)
+    form = AddRecordForm(request.POST or None, instance=current_record)
+    if form.is_valid():
+        form.save()
         messages.success(
             request,
-            message="You Must Be Logged In..."
+            message="Phone Book Record Has Been Updated!"
         )
         return redirect('home')
+    return render(
+        request,
+        template_name='update_record.html',
+        context={'form': form}
+    )
